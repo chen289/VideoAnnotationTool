@@ -1,0 +1,156 @@
+.header {
+  width: 100%;
+  padding-bottom: 2px;
+  height: 10%;
+  text-align: left;
+  background: #6f7174;
+  color: white;
+  font-size: 10px;
+}
+
+.subheader {
+  width: 100%;
+  height: 5%;
+  left:7.1%;
+  background:  hsla(30, 6%, 93%, 0.952);
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.canvasdiv {
+      width:99%;
+      height:90%;
+      position:absolute;
+      background-color: hsla(30, 6%, 93%, 0.952);
+      display: inline-block;
+      top: 30%;
+      left: 7.1%;
+      margin-top: -100px;
+      margin-left: -100px;
+}
+
+.framebutton {
+  background-color: #aeb3ae; 
+  border: none;
+  color: rgb(12, 0, 0);
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 12px 8px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.framebutton1 {
+  background-color: #aeb3ae; 
+  color: black; 
+  border: 2px solid black;
+  font-family: 'Calibri';
+  font-weight: bolder;
+  text-align: center;
+}
+
+.framebutton1:hover {
+  background-color: #444644;
+  color: white;
+}
+
+.frameTextbox {
+  height: 25px;
+  width: 50px;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid #555;
+  border-radius: 6px;
+  
+}
+
+.frameTextbox:hover {
+  background-color:white;
+  color: black;
+  transition-duration: 0.4s
+}
+
+.upload-btn-wrapper {
+  position: absolute;
+  overflow: hidden;
+  display: inline-block;
+  right:12px;
+  top: 15px;
+}
+
+.upload-btn-wrapper:hover {
+  background-color:rgb(34, 236, 15);
+  color: #080101;
+  transition-duration: 0.4s
+}
+
+.btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.videoName{
+  position: absolute;
+  overflow: hidden;
+  display: inline-block;
+  text-align: center;
+  right:40%;
+  top: 12px;
+  font-family: 'Calibri';
+  font-weight: bold;
+  font-size: 20px;
+
+}
+
+
+.btn-group {
+
+  border: 0px solid green; /* Green border */
+  color: white; /* White text */
+  margin-right: 10px;
+  cursor: pointer; /* Pointer/hand icon */
+  width: 18%; /* Set a width if needed */
+  display: inline-block;/* Make the buttons appear below each other */
+  float: right;
+}
+
+.btn-group button:not(:last-child) {
+  border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
+
+.button {
+  background-color: #4CAF50; /* Green background */
+  border: 1px solid green; /* Green border */
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  width: 100%; /* Set a width if needed */
+  display: block;/* Make the buttons appear below each other */
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
