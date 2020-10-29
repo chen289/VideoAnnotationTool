@@ -205,11 +205,18 @@
                   console.log("SUCCESS " + data);
                   text = data['context'];
                   displayImages(text);
+                  console.log(text);
+                  splittext = text[0].split("/");
+                  lengthoftext = splittext.length;
+                  seg_frame =  splittext[lengthoftext-1];
+                  split_segframe = seg_frame.split(".");
+                  document.getElementById("segmentationFrameNumber").value = split_segframe[0];
               },
               error: function (e) {
                   console.log("Error");
               }
           });
+
     }
 
     function exportBoundingBoxes() {
@@ -300,7 +307,7 @@
   <img src="" style="width:81%; height:99%;" id="imageId" alt="image" class="d-inline-block">
   <div class="btn-group bg-light">
     <div class="d-inline">
-      <input type="number" id="frameNumber" class="frameTextbox inline" name="phone" placeholder="" pattern="[0-9]{3}">
+      <input type="number" id="segmentationFrameNumber" class="frameTextbox inline" name="phone" placeholder="" pattern="[0-9]{3}">
       <p class="d-inline-block text-primary">Segmentation Frame</p>
       <br><button type="button" class="btn-primary d-block bg-info btn-lg btn-block" onclick="displaySegmentation()">Draw Segmentation</button>
       <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportSegmentation()">Export Segmentation</button>
