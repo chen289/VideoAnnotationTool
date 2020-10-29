@@ -24,7 +24,7 @@ def drawboxes(request):
     filelist = os.listdir(settings.MEDIA_ROOT)
 
     imagepath = []
-    for count in range(0, 451):
+    for count in range(0, len(boxes)):
         framenumber = str(count) + '.png'
         counter = filelist[filelist.index(framenumber)]
         imagepath.append("/media/" + counter)
@@ -45,7 +45,7 @@ def drawPosturePoints(request):
     filelist = os.listdir(settings.MEDIA_ROOT)
 
     imagepath = []
-    for count in range(0, 451):
+    for count in range(0, len(boxes)):
         framenumber = str(count) + '.png'
         counter = filelist[filelist.index(framenumber)]
         imagepath.append("/media/" + counter)
@@ -93,9 +93,56 @@ def upload(request):
     if request.method == 'POST':
         import os
 
+        out_bounding_boxes_list = os.listdir(settings.BOUNDING_BOXES_DIR)
+        out_posture_points_list = os.listdir(settings.POSTURE_POINTS_DIR)
+        out_merged_images_list = os.listdir(settings.MERGED_IMAGES_DIR)
+        out_seg_frame_list = os.listdir(settings.SEGMENTATION_DIR)
+        out_annotated_video_list = os.listdir(settings.ANNOTATED_VIDEO)
+        out_merged_video_list = os.listdir(settings.MERGED_VIDEO_DIR)
+
         filelist = [f for f in os.listdir(settings.MEDIA_ROOT)]
         for f in filelist:
             os.remove(os.path.join(settings.MEDIA_ROOT, f))
+
+        filelist = [f for f in os.listdir(settings.ALL_FRAMES)]
+        for f in filelist:
+            os.remove(os.path.join(settings.ALL_FRAMES, f))
+
+        filelist = [f for f in os.listdir(settings.TO_BE_ANNOTATED)]
+        for f in filelist:
+            os.remove(os.path.join(settings.TO_BE_ANNOTATED, f))
+
+        filelist = [f for f in os.listdir(settings.TO_BE_SEGMENTED)]
+        for f in filelist:
+            os.remove(os.path.join(settings.TO_BE_SEGMENTED, f))
+
+        filelist = [f for f in os.listdir(settings.TO_BE_POSTURIZED)]
+        for f in filelist:
+            os.remove(os.path.join(settings.TO_BE_POSTURIZED, f))
+
+        filelist = [f for f in os.listdir(settings.BOUNDING_BOXES_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.BOUNDING_BOXES_DIR, f))
+
+        filelist = [f for f in os.listdir(settings.MERGED_IMAGES_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.MERGED_IMAGES_DIR, f))
+
+        filelist = [f for f in os.listdir(settings.POSTURE_POINTS_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.POSTURE_POINTS_DIR, f))
+
+        filelist = [f for f in os.listdir(settings.SEGMENTATION_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.SEGMENTATION_DIR, f))
+
+        filelist = [f for f in os.listdir(settings.ANNOTATED_VIDEO)]
+        for f in filelist:
+            os.remove(os.path.join(settings.ANNOTATED_VIDEO, f))
+
+        filelist = [f for f in os.listdir(settings.MERGED_VIDEO_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.MERGED_VIDEO_DIR, f))
 
         for file in request.FILES.getlist('document'):
             fs = FileSystemStorage()

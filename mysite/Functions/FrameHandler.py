@@ -27,6 +27,7 @@ def copyAnnotationsFile():
 
 #will copy the frames to be annotated to "ToBeAnnotated directory"
 def copyImagesToBeDisplayedAfterAnnotation():
+
     global all_frames_input_dir, to_be_annotated_input_dir
 
     src = all_frames_input_dir
@@ -51,6 +52,7 @@ def initiateSetupProcess():
     copyAnnotationsFile()
     global objects_information
     objects_information = parseXMLwithET()
+    print(objects_information['boundingboxes'])
 
 #will draw bounding boxes of all objects in that particular frame and save the frame in "OutputData/AnnotatedFrames"
 def drawBoundingBoxes():
@@ -168,8 +170,9 @@ def makePosPoints_BoxesVideo():
     short_video_name = getVideoName()
     video_name = video_folder+"/"+ short_video_name
 
+    mergedImagesList = os.listdir(set.MERGED_IMAGES_DIR)
     sorted_names = []
-    for i in range(0, 451):
+    for i in range(0, len(mergedImagesList)):
        sorted_names.append(str(i) + '.png')
 
     frame = cv2.imread(os.path.join(image_folder, sorted_names[0]))
@@ -286,5 +289,12 @@ def drawSegmentation():
     framenumber = drawSegmentationPolygons()
     drawSegmentationPolyLines()
     return framenumber
+
+
+if __name__ == '__main__':
+    initiateSetupProcess()
+    drawBoundingBoxes()
+    drawPosturePoints()
+    makePosPoints_BoxesVideo()
 
 
