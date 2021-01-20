@@ -5,7 +5,8 @@ from zipfile import ZipFile
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
-from mysite.Functions.FrameHandler import drawBoundingBoxes, makeAnnotatedVideo,makeAnnotatedPostureVideo, makePosPoints_BoxesVideo
+from mysite.Functions.FrameHandler import drawBoundingBoxes, makeAnnotatedVideo, makeAnnotatedPostureVideo, \
+    makePosPoints_BoxesVideo, drawBehaviourAnnotations, makeBehaviourAnnotationsVideo
 from mysite import settings
 from mysite import Functions as func
 
@@ -144,6 +145,18 @@ def upload(request):
         for f in filelist:
             os.remove(os.path.join(settings.MERGED_VIDEO_DIR, f))
 
+        filelist = [f for f in os.listdir(settings.BEHAVIOUR_ANNOTATIONS_VIDEO_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.BEHAVIOUR_ANNOTATIONS_VIDEO_DIR, f))
+
+        filelist = [f for f in os.listdir(settings.BEHAVIOUR_ANNOTATIONS_OUTPUT_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.BEHAVIOUR_ANNOTATIONS_OUTPUT_DIR, f))
+
+        filelist = [f for f in os.listdir(settings.BEHAVIOUR_ANNOTATIONS_INPUT_DIR)]
+        for f in filelist:
+            os.remove(os.path.join(settings.BEHAVIOUR_ANNOTATIONS_INPUT_DIR, f))
+
         for file in request.FILES.getlist('document'):
             fs = FileSystemStorage()
             name = fs.save(file.name, file)
@@ -226,6 +239,16 @@ def exportSegmentation(request):
 
     return JsonResponse(data)
 
+def makeBehaviorAnnotationsVideo(request):
+
+    drawBehaviourAnnotations()
+    videoname = makeBehaviourAnnotationsVideo()
+    move(os.path.join(settings.BEHAVIOUR_ANNOTATIONS_VIDEO_DIR, videoname), os.path.join(settings.MEDIA_ROOT, videoname))
+    data = {
+        'filepath': '/media/' + videoname,
+        'filename': videoname
+    }
+    return JsonResponse(data)
 
 
 

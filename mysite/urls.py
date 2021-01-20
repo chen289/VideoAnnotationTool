@@ -17,6 +17,7 @@ urlpatterns = [
     path('exportBoundingBoxes/', views.exportBoundingBoxes, name='exportBoundingBoxes'),
     path('exportPosturePoints/', views.exportPosturePoints, name='exportPosturePoints'),
     path('exportSegmentation', views.exportSegmentation, name='exportSegmentation'),
+    path('makeBehaviorAnnotationsVideo', views.makeBehaviorAnnotationsVideo, name='makeBehaviorAnnotationsVideo'),
     path('upload/', views.upload, name='upload'),
     path('admin/', admin.site.urls),
 ]

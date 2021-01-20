@@ -283,6 +283,28 @@
 
     }
 
+    function downloadBehaviourAnnotationsVideo() {
+
+    $.ajax({
+              type: "GET",
+              url: "http://127.0.0.1:8000/makeBehaviorAnnotationsVideo",
+              processData: false,
+              contentType: false,
+              cache: false,
+              timeout: 600000,
+              success: function (data) {
+                  console.log("SUCCESS " + data);
+                  filepath = data['filepath'];
+                  filename = data['filename'];
+                  downloadURI(filepath, filename)
+              },
+              error: function (e) {
+                  console.log("Error");
+              }
+          });
+
+    }
+
   </script>
 <body>
 
@@ -313,19 +335,16 @@
       <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportSegmentation()">Export Segmentation</button>
       <br>
       <br>
-      <br>
       <button type="button" class="btn-primary d-inline-block bg-info btn-lg btn-block" onclick="drawBoxes()">Draw Bounding Boxes</button>
       <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportBoundingBoxes()">Export Bounding Boxes</button>
       <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="downloadVideo()">Bounding Boxes Video</button>
       <br>
       <br>
-      <br>
       <button type="button" class="btn-primary d-inline-block bg-info btn-lg btn-block" onclick="drawPosturePoints()">Draw Pos_Points</button>
       <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportPosturePoints()">Export Pos_Points</button>
       <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="downloadPostureVideo()">Pos_Points Video</button>
-      <br>
-      <br>
       <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="makePosPoints_BoxesVideo()">Boxes + Pos_Points Video</button>
+      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="downloadBehaviourAnnotationsVideo()">Behaviour_Annotations</button>
     </div>
   </div><br>
 

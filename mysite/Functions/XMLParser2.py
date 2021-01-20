@@ -8,6 +8,7 @@ def parseXMLwithET():
     poly_lines = dict()
     labels_info = dict()
 
+
     tree = ET.parse( settings.INPUT_DATA_DIRECTORY+'/annotations.xml' )
     root = tree.getroot()
     meta = root.find('meta')
@@ -64,3 +65,4 @@ def getVideoName():
     meta = root.find('meta')
     source = meta.find('source')
     return source.text
+
