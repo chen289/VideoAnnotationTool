@@ -30,7 +30,7 @@
       var form = $('#formData')[0];
           var data = new FormData(form);
           var count_of_files = $('#formData')[0][1].files.length;
-          console.log(count);
+          //console.log(count_of_files);
           $.ajax({
               type: "POST",
               enctype: 'multipart/form-data',

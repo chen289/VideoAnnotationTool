@@ -5,8 +5,7 @@ from zipfile import ZipFile
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
-from mysite.Functions.FrameHandler import drawBoundingBoxes, makeAnnotatedVideo, makeAnnotatedPostureVideo, \
-    makePosPoints_BoxesVideo, drawBehaviourAnnotations, makeBehaviourAnnotationsVideo
+from mysite.Functions.FrameHandler import drawBoundingBoxes, makeAnnotatedVideo, makeAnnotatedPostureVideo, makePosPoints_BoxesVideo, drawBehaviourAnnotations, makeBehaviourAnnotationsVideo
 from mysite import settings
 from mysite import Functions as func
 
@@ -90,16 +89,8 @@ def downloadMergedVideo(request):
 
 def upload(request):
     context = []
-    json_file= None
     if request.method == 'POST':
         import os
-
-        out_bounding_boxes_list = os.listdir(settings.BOUNDING_BOXES_DIR)
-        out_posture_points_list = os.listdir(settings.POSTURE_POINTS_DIR)
-        out_merged_images_list = os.listdir(settings.MERGED_IMAGES_DIR)
-        out_seg_frame_list = os.listdir(settings.SEGMENTATION_DIR)
-        out_annotated_video_list = os.listdir(settings.ANNOTATED_VIDEO)
-        out_merged_video_list = os.listdir(settings.MERGED_VIDEO_DIR)
 
         filelist = [f for f in os.listdir(settings.MEDIA_ROOT)]
         for f in filelist:
