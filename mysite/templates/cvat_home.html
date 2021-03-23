@@ -11,9 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 <script>
-    var text = [1,2,3,4];
-    //var text = {{context|safe}};
-    console.log(text);
+
     counter = 0;
 
     $(document).ready(function () {
@@ -31,6 +29,8 @@
     function uploadImages() {
       var form = $('#formData')[0];
           var data = new FormData(form);
+          var count_of_files = $('#formData')[0][1].files.length;
+          console.log(count);
           $.ajax({
               type: "POST",
               enctype: 'multipart/form-data',
