@@ -292,21 +292,6 @@ def drawSegmentation():
     drawSegmentationPolyLines()
     return framenumber
 
-def behaviouralAnnotations():
-    global objects_information, to_be_annotated_input_dir, bounding_boxes_dir
-    objects = objects_information['boundingboxes']
-    labels = objects_information['labels_info']
-    seg_stop = int(objects_information['segment_stop'])
-
-    for obj in objects:
-        if type(obj) == int and obj in objects:
-            individual_obj = objects[obj]
-            for frame in individual_obj:
-                if (type(frame) != str):
-                    if (int(frame.attrib['frame']) <= seg_stop):
-                        if frame.attrib['outside'] == '0':
-                            image = frame.attrib['frame']
-
 def drawBehaviourAnnotations():
     global objects_information, behaviour_annotations_input_dir, behaviour_annotations_output_dir
     objects = objects_information['boundingboxes']
