@@ -332,22 +332,22 @@ def drawBehaviourAnnotations():
                                     top_left = (int(float(frame.attrib['xtl'])), int(float(frame.attrib['ytl'])))
                                     bottom_right = (int(float(frame.attrib['xbr'])), int(float(frame.attrib['ybr'])))
                                     RGBcolor = ImageColor.getcolor(labels[objects[obj][len(objects[obj]) - 1]], "RGB")
-                                    BGRcolor = (RGBcolor[2], RGBcolor[1], RGBcolor[0])
+                                    BGRcolor = (80, 4, 235)
                                     impath = os.path.join(to_be_annotated_input_dir, image + ".png")
                                     im = cv2.imread(impath.replace("\\", '/'))
-                                    img = cv2.rectangle(img=im, pt1=top_left, pt2=bottom_right, color=BGRcolor, thickness=1)
+                                    img = cv2.rectangle(img=im, pt1=top_left, pt2=bottom_right, color=BGRcolor, thickness=2)
                                     file = os.path.join(to_be_annotated_input_dir, image + ".png")
                                     file = file.replace("\\", '/')
                                     cv2.imwrite(file, img)
                                     counter = 0
                                     for att in attributes_to_display:
-                                        text_pos = (int(float(frame.attrib['xtl'])), int(float(frame.attrib['ytl']) - counter))
+                                        text_pos = (int(float(frame.attrib['xtl'])), int((float(frame.attrib['ytl'])- 8) - counter))
                                         img = cv2.putText(img, text=att, org=text_pos, fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                                                     fontScale=0.5, color=BGRcolor, thickness=1)
+                                                     fontScale=0.6, color=BGRcolor, thickness=2)
                                         file = os.path.join(behaviour_annotations_input_dir, image + ".png")
                                         file = file.replace("\\", '/')
                                         cv2.imwrite(file, img)
-                                        counter = counter + 10
+                                        counter = counter + 18
 
     names = os.listdir(behaviour_annotations_input_dir)
     for name in names:
