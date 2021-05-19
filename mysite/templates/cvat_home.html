@@ -13,7 +13,6 @@
 <script>
 
     counter = 0;
-
     $(document).ready(function () {
       var framenum = document.getElementById("frameNumber");
       framenum.addEventListener("keyup", function(event){
@@ -28,9 +27,10 @@
 
     function uploadImages() {
       var form = $('#formData')[0];
-          var data = new FormData(form);
-          var count_of_files = $('#formData')[0][1].files.length;
-          //console.log(count_of_files);
+       var x = document.getElementById("video_folders").selectedIndex;
+       var data = document.getElementsByTagName("option")[x].value;
+       var data = new FormData(form);
+       console.log(data);
           $.ajax({
               type: "POST",
               enctype: 'multipart/form-data',
@@ -40,11 +40,17 @@
               contentType: false,
               cache: false,
               timeout: 600000,
-              success: function (data) {
-                  console.log("SUCCESS " + data);
-                  text = data['context'];
-                  displayImages(text);
+              beforeSend: function() {
+                addProcessAwaitingMessage();
               },
+              success: function (datas) {
+                  console.log("SUCCESS");
+                  text = datas['context'];
+                  console.log(text);
+                  displayImages(text);
+                  addProcessCompleteMessage();
+              },
+
               error: function (e) {
                   console.log("Error");
               }
@@ -88,10 +94,14 @@
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
                   console.log("SUCCESS " + data);
                   text = data['context'];
                   displayImages(text);
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
@@ -112,19 +122,20 @@
          link.remove();
     }
 
-    function downloadVideo() {
+    function makeBoundinBoxVideo() {
     $.ajax({
               type: "GET",
-              url: "http://127.0.0.1:8000/downloadVideo",
+              url: "http://127.0.0.1:8000/makeBoundingBoxesVideo",
               processData: false,
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
-                  console.log("SUCCESS " + data);
-                  filepath = data['filepath'];
-                  filename = data['filename'];
-                  downloadURI(filepath, filename)
+                  console.log(data)
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
@@ -132,19 +143,20 @@
           });
     }
 
-    function downloadPostureVideo() {
+    function makePostureVideo() {
     $.ajax({
               type: "GET",
-              url: "http://127.0.0.1:8000/downloadMergedVideo",
+              url: "http://127.0.0.1:8000/makePostureVideo",
               processData: false,
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
-                  console.log("SUCCESS " + data);
-                  filepath = data['filepath'];
-                  filename = data['filename'];
-                  downloadURI(filepath, filename)
+                  console.log(data);
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
@@ -156,16 +168,17 @@
 
     $.ajax({
               type: "GET",
-              url: "http://127.0.0.1:8000/downloadMergedVideo",
+              url: "http://127.0.0.1:8000/makeMergedVideo",
               processData: false,
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
-                  console.log("SUCCESS " + data);
-                  filepath = data['filepath'];
-                  filename = data['filename'];
-                  downloadURI(filepath, filename)
+                  console.log(data);
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
@@ -182,10 +195,14 @@
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
                   console.log("SUCCESS " + data);
                   text = data['context'];
                   displayImages(text);
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
@@ -201,6 +218,9 @@
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
                   console.log("SUCCESS " + data);
                   text = data['context'];
@@ -211,6 +231,7 @@
                   seg_frame =  splittext[lengthoftext-1];
                   split_segframe = seg_frame.split(".");
                   document.getElementById("segmentationFrameNumber").value = split_segframe[0];
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
@@ -283,8 +304,7 @@
 
     }
 
-    function downloadBehaviourAnnotationsVideo() {
-
+    function makeBehaviourAnnotationsVideo() {
     $.ajax({
               type: "GET",
               url: "http://127.0.0.1:8000/makeBehaviorAnnotationsVideo",
@@ -292,30 +312,75 @@
               contentType: false,
               cache: false,
               timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
               success: function (data) {
-                  console.log("SUCCESS " + data);
-                  filepath = data['filepath'];
-                  filename = data['filename'];
-                  downloadURI(filepath, filename)
+                  console.log(data);
+                  addProcessCompleteMessage();
               },
               error: function (e) {
                   console.log("Error");
               }
           });
+    }
+
+    function getListOfVideos() {
+      $.ajax({
+              type: "GET",
+              url: "http://127.0.0.1:8000/getListOfVideos",
+              processData: false,
+              contentType: false,
+              cache: false,
+              timeout: 600000,
+              beforeSend: function() {
+                addProcessAwaitingMessage();
+              },
+              success: function (data) {
+                  console.log("SUCCESS " + data);
+                  console.log(data['context']);
+
+                  var select = document.getElementById("video_folders"), arr = data['context'];
+                   for( var i = 0; i < arr.length; i++) {
+                     var option = document.createElement("OPTION"), txt = document.createTextNode(arr[i]);
+                     option.appendChild( txt );
+                     select.insertBefore( option, select.lastChild );
+                   }
+              addProcessCompleteMessage();
+              },
+              error: function (e) {
+                  console.log("Error");
+              }
+          });
+    }
+
+    function addProcessAwaitingMessage() {
+        document.getElementById("msg").innerHTML = "Processing... please wait";
+    }
+
+    function addProcessCompleteMessage() {
+        document.getElementById("msg").innerHTML = "Processing Done!";
+        setTimeout(function() {
+          document.getElementById("msg").innerHTML= "";
+        }, 3000);
 
     }
 
   </script>
 <body>
 
-<nav class="navbar navbar-light bg-light justify-content-between">
+<nav id="mainpart" class="navbar navbar-light bg-light justify-content-between">
   <a class="navbar-brand" href="home">
     <img src="{% static 'LogosAndButtons/AVTLogo.png' %}" alt="">
   </a>
+  <p id="msg" class="d-inline-block text-primary"></p>
+  <button id="refresh" name="refresh" onclick="getListOfVideos()">Refresh</button>
   <form method="post" enctype="multipart/form-data" id="formData">
     {% csrf_token %}
-    <input type="file" name="document" multiple>
-    <button type="button" id="btnSubmit" onclick="uploadImages()">Upload files</button>
+    <select name="videos" id="video_folders">
+      <option value="default">default</option>
+    </select>
+    <button id="btnSubmit" type="button" onclick="uploadImages()">Upload files</button>
   </form>
 </nav>
 
@@ -332,19 +397,16 @@
       <input type="number" id="segmentationFrameNumber" class="frameTextbox inline" name="phone" placeholder="" pattern="[0-9]{3}">
       <p class="d-inline-block text-primary">Segmentation Frame</p>
       <br><button type="button" class="btn-primary d-block bg-info btn-lg btn-block" onclick="displaySegmentation()">Draw Segmentation</button>
-      <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportSegmentation()">Export Segmentation</button>
       <br>
       <br>
       <button type="button" class="btn-primary d-inline-block bg-info btn-lg btn-block" onclick="drawBoxes()">Draw Bounding Boxes</button>
-      <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportBoundingBoxes()">Export Bounding Boxes</button>
-      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="downloadVideo()">Bounding Boxes Video</button>
+      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="makeBoundinBoxVideo()">Bounding Boxes Video</button>
       <br>
       <br>
       <button type="button" class="btn-primary d-inline-block bg-info btn-lg btn-block" onclick="drawPosturePoints()">Draw Pos_Points</button>
-      <button type="button" class="btn-primary d-inline-block bg-success btn-lg btn-block" onclick="exportPosturePoints()">Export Pos_Points</button>
-      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="downloadPostureVideo()">Pos_Points Video</button>
+      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="makePostureVideo()">Pos_Points Video</button>
       <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="makePosPoints_BoxesVideo()">Boxes + Pos_Points Video</button>
-      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="downloadBehaviourAnnotationsVideo()">Behaviour_Annotations</button>
+      <button type="button" class="btn-primary d-inline-block bg-dark btn-lg btn-block" onclick="makeBehaviourAnnotationsVideo()">Behaviour_Annotations</button>
     </div>
   </div><br>
 

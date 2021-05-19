@@ -5,7 +5,8 @@ from zipfile import ZipFile
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.core.files.storage import FileSystemStorage
-from mysite.Functions.FrameHandler import drawBoundingBoxes, makeAnnotatedVideo, makeAnnotatedPostureVideo, makePosPoints_BoxesVideo, drawBehaviourAnnotations, makeBehaviourAnnotationsVideo
+from mysite.Functions.FrameHandler import drawBoundingBoxes, makeAnnotatedVideo, \
+makeAnnotatedPostureVideo, makePosPoints_BoxesVideo, drawBehaviourAnnotations, makeBehaviourAnnotationsVideo, getListOfVideoFolders
 from mysite import settings
 from mysite import Functions as func
 
@@ -56,27 +57,23 @@ def drawPosturePoints(request):
     return JsonResponse(data)
 
 
-def downloadVideo(request):
+def makeBoundingBoxesVideo(request):
 
     videoname = makeAnnotatedVideo()
-    move(os.path.join(settings.ANNOTATED_VIDEO, videoname), os.path.join(settings.MEDIA_ROOT, videoname))
     data = {
-        'filepath': '/media/'+ videoname,
-        'filename': videoname
+        'context': 'Video ' + videoname + ' has been saved!'
     }
     return JsonResponse(data)
 
-def downloadPostureVideo(request):
+def makePostureVideo(request):
 
     videoname = makeAnnotatedPostureVideo()
-    move(os.path.join(settings.POSTURE_POINTS_DIR, videoname), os.path.join(settings.MEDIA_ROOT, videoname))
     data = {
-        'filepath': '/media/'+ videoname,
-        'filename': videoname
+        'context': 'Video ' + videoname + ' has been saved!'
     }
     return JsonResponse(data)
 
-def downloadMergedVideo(request):
+def makeMergedVideo(request):
 
     videoname = makePosPoints_BoxesVideo()
     move(os.path.join(settings.MERGED_VIDEO_DIR, videoname), os.path.join(settings.MEDIA_ROOT, videoname))
@@ -84,11 +81,11 @@ def downloadMergedVideo(request):
         'filepath': '/media/'+ videoname,
         'filename': videoname
     }
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)
 
 
 def upload(request):
-    context = []
+    datas = {}
     if request.method == 'POST':
         import os
 
@@ -148,16 +145,20 @@ def upload(request):
         for f in filelist:
             os.remove(os.path.join(settings.BEHAVIOUR_ANNOTATIONS_INPUT_DIR, f))
 
-        for file in request.FILES.getlist('document'):
-            fs = FileSystemStorage()
-            name = fs.save(file.name, file)
-            if(name != 'annotations.xml'):
-                context.append( fs.url(name) )
-        initiateSetupProcess()
-        data = {
+        request_data = request.POST.get('videos')
+        initiateSetupProcess(request_data)
+
+        context = []
+        filelist = os.listdir(settings.MEDIA_ROOT)
+        for count in range(0, len(filelist)):
+            framenumber = str(count) + '.png'
+            counter = filelist[filelist.index(framenumber)]
+            context.append('/media/' + counter)
+        datas = {
             'context': context
         }
-    return JsonResponse(data)
+
+    return JsonResponse(datas)
 
 
 def displaySegmentation(request):
@@ -234,10 +235,15 @@ def makeBehaviorAnnotationsVideo(request):
 
     drawBehaviourAnnotations()
     videoname = makeBehaviourAnnotationsVideo()
-    move(os.path.join(settings.BEHAVIOUR_ANNOTATIONS_VIDEO_DIR, videoname), os.path.join(settings.MEDIA_ROOT, videoname))
     data = {
-        'filepath': '/media/' + videoname,
-        'filename': videoname
+        'context': 'Video ' + videoname + ' has been saved!'
+    }
+    return JsonResponse(data)
+
+def getListOfVideos(request):
+    names = getListOfVideoFolders()
+    data = {
+        'context': names
     }
     return JsonResponse(data)
 

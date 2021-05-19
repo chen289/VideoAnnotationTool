@@ -153,3 +153,4 @@ MERGED_IMAGES_DIR = os.path.join(BASE_DIR, 'mysite\\Data\\OutputData\\AnnotatedF
 BEHAVIOUR_ANNOTATIONS_INPUT_DIR = os.path.join(BASE_DIR, 'mysite\\Data\\InputData\\BehaviourAnnotationsInput')
 BEHAVIOUR_ANNOTATIONS_OUTPUT_DIR = os.path.join(BASE_DIR, 'mysite\\Data\\OutputData\\AnnotatedFrames\\BehaviourAnnotationsOutput')
 BEHAVIOUR_ANNOTATIONS_VIDEO_DIR = os.path.join(BASE_DIR, 'mysite\\Data\\OutputData\\BehaviourAnnotationsVideo')
+LIST_OF_VIDEOS_DIR = os.path.join(BASE_DIR, 'mysite\\Data\\ListOfVideos')

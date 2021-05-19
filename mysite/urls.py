@@ -9,16 +9,17 @@ from mysite.core import views
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
     path('drawboxes/',views.drawboxes, name= 'drawboxes'),
-    path('downloadVideo/', views.downloadVideo, name='downloadVideo'),
+    path('makeBoundingBoxesVideo/', views.makeBoundingBoxesVideo, name='makeBoundingBoxesVideo'),
     path('drawPosturePoints/', views.drawPosturePoints, name='drawPosturePoints'),
-    path('downloadPostureVideo/', views.downloadPostureVideo, name='downloadPostureVideo'),
-    path('downloadMergedVideo/', views.downloadMergedVideo, name='downloadMergedVideo'),
+    path('makePostureVideo/', views.makePostureVideo, name='makePostureVideo'),
+    path('makeMergedVideo/', views.makeMergedVideo, name='makeMergedVideo'),
     path('displaySegmentation/', views.displaySegmentation, name='displaySegmentation'),
     path('exportBoundingBoxes/', views.exportBoundingBoxes, name='exportBoundingBoxes'),
     path('exportPosturePoints/', views.exportPosturePoints, name='exportPosturePoints'),
     path('exportSegmentation', views.exportSegmentation, name='exportSegmentation'),
     path('makeBehaviorAnnotationsVideo', views.makeBehaviorAnnotationsVideo, name='makeBehaviorAnnotationsVideo'),
     path('upload/', views.upload, name='upload'),
+    path('getListOfVideos', views.getListOfVideos, name='getListOfVideos'),
     path('admin/', admin.site.urls),
 ]
 
